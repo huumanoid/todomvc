@@ -37,6 +37,7 @@ var app = app || {};
     }
 
     function http_todo_create(todo, cb) {
+        const xhttp = new XMLHttpRequest();
         xhttp.open('POST', TODOS_URL, true);
         xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhttp.send(Utils.querystringify(todo));

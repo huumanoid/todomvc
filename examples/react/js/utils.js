@@ -25,12 +25,24 @@ var app = app || {};
 			return count === 1 ? word : word + 's';
 		},
 
+        querystringify: function (plainobj) {
+            let qs = '';
+            for (let key in plainobj) {
+                if (qs.length !== 0)
+                    qs += '&';
+                qs += key + '=' + plainobj[key];
+            }
+            return qs;
+        },
+
 		store: function (namespace, data) {
 			if (data) {
+                return
 				return localStorage.setItem(namespace, JSON.stringify(data));
 			}
 
 			var store = localStorage.getItem(namespace);
+            return [];
 			return (store && JSON.parse(store)) || [];
 		},
 

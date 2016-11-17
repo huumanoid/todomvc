@@ -62,6 +62,21 @@ var app = app || {};
                 this.inform();
             }
         })
+
+        this.socket = new WebSocket('ws://' + location.hostname +':8081');
+        this.socket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            if (data.update) {
+                console.log(data)
+                http_todo_get_all((xhttp) => {
+                    if (xhttp.readyState === 4 && xhttp.status === 200) {
+                        const todos = JSON.parse(xhttp.responseText).response.todos;
+                        this.todos = todos;
+                        this.inform();
+                    }
+                })
+            }
+        }
 	};
 
 	app.TodoModel.prototype.subscribe = function (onChange) {
@@ -86,6 +101,7 @@ var app = app || {};
         http_todo_create(newTodo, (xhttp) => {
             if (xhttp.readyState === 4 && (xhttp.status === 200 
                         || xhttp.status === 201)) {
+
                 newTodo.local = false;
 
                 const response = JSON.parse(xhttp.responseText).response;
